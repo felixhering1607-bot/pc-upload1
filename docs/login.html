@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anmelden - PC Upload</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <h1>PC Upload</h1>
+      <p class="sub">Melde dich an, um Dateien an deinen PC zu senden.</p>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <form id="loginForm">
+        <label for="username">Benutzername</label>
+        <input type="text" id="username" autocomplete="username" required>
+
+        <label for="password">Passwort</label>
+        <input type="password" id="password" autocomplete="current-password" required>
+
+        <button type="submit" class="btn" id="loginBtn">Anmelden</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script>
+    const form = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+    const loginBtn = document.getElementById('loginBtn');
+
+    // Falls bereits ein gueltiges Token vorhanden ist, direkt zum Dashboard
+    if (localStorage.getItem('pcupload_token')) {
+      window.location.href = 'index.html';
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorMsg.classList.remove('show');
+      loginBtn.disabled = true;
+      loginBtn.textContent = 'Anmelden...';
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch(`${BACKEND_URL}/api/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || 'Anmeldung fehlgeschlagen.');
+        }
+
+        localStorage.setItem('pcupload_token', data.token);
+        window.location.href = 'index.html';
+      } catch (err) {
+        errorMsg.textContent = err.message.includes('fetch')
+          ? 'Backend nicht erreichbar. Ist die BACKEND_URL in config.js korrekt?'
+          : err.message;
+        errorMsg.classList.add('show');
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Anmelden';
+      }
+    });
+  </script>
+</body>
+</html>

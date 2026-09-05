@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PC Upload - Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <h1>📤 PC Upload</h1>
+      <a href="#" class="logout-link" id="logoutBtn">Abmelden</a>
+    </div>
+
+    <div class="error-msg" id="errorMsg"></div>
+    <div class="success-msg" id="successMsg"></div>
+
+    <!-- PC Status -->
+    <div class="card">
+      <div class="status-row">
+        <div class="status-dot offline" id="statusDot"></div>
+        <div class="status-label">
+          <span id="statusText">Wird geladen...</span>
+          <small id="statusSub">&nbsp;</small>
+        </div>
+      </div>
+      <div class="button-row">
+        <button class="btn secondary" id="wakeBtn">PC aufwecken</button>
+        <button class="btn secondary" id="shutdownBtn">Nach Übertragung herunterfahren</button>
+      </div>
+    </div>
+
+    <!-- Upload -->
+    <div class="card">
+      <p class="section-title">Dateien senden</p>
+      <div class="dropzone" id="dropzone">
+        <div class="icon">📁</div>
+        <div>Dateien hierher ziehen oder</div>
+        <label class="big-btn" for="fileInput">Dateien auswählen</label>
+        <input type="file" id="fileInput" multiple>
+      </div>
+      <div style="margin-top:16px;">
+        <button class="btn full" id="sendBtn" disabled>An PC senden</button>
+      </div>
+    </div>
+
+    <!-- Warteschlange -->
+    <div class="card">
+      <p class="section-title">Warteschlange</p>
+      <div id="queueList">
+        <div class="empty-hint">Noch keine Dateien ausgewählt.</div>
+      </div>
+    </div>
+
+    <!-- Zuletzt uebertragen -->
+    <div class="card">
+      <p class="section-title">Zuletzt übertragen</p>
+      <div id="completedList">
+        <div class="empty-hint">Noch keine Übertragungen.</div>
+      </div>
+    </div>
+
+    <!-- Testmodus -->
+    <div class="card">
+      <p class="section-title">Testmodus</p>
+      <div class="test-list" id="testList"></div>
+      <div style="margin-top:14px;">
+        <button class="btn secondary full" id="runTestsBtn">Alle Tests ausführen</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
